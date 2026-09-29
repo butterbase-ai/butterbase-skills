@@ -118,4 +118,10 @@ Returns aggregate token counts + cost. Useful for billing reconciliation, spendi
 
 ---
 
+## 8. Decisions (typed classification)
+
+For routing, classification, moderation or scoring, where code needs a choice / yes-no / score with probabilities, use `manage_ai` `action: "decide"` (SDK `ai.decide`) with a decision model (default `typesafe/jev-1.13`) instead of asking a chat model for JSON. It is cheaper, faster and returns typed probabilities. Full reference: `butterbase_docs` topic `ai`, "Decision models".
+
+---
+
 If a `docs/butterbase/00-state.md` exists in the working directory, prefer invoking via `/butterbase-skills:journey-ai` so the journey orchestrator stays in sync.
