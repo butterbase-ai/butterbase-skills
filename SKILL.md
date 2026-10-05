@@ -1,6 +1,6 @@
 ---
 name: butterbase-skills
-description: Claude Code plugin for Butterbase — 30+ guided skills and auto-configured MCP for the AI-native backend-as-a-service.
+description: Claude Code plugin for Butterbase — 39 guided skills, 34 slash commands, and auto-configured MCP for the AI-native backend-as-a-service.
 license: MIT
 supported_assistants:
   - claude-code
@@ -13,7 +13,7 @@ repository: https://github.com/butterbase-ai/butterbase-skills
 
 Claude Code plugin for **[Butterbase](https://butterbase.ai)** — an AI-native backend-as-a-service with Postgres, auth, storage, serverless functions, an AI gateway, RAG, realtime, and durable objects.
 
-This plugin gives Claude deep knowledge of Butterbase's 40+ MCP tools, ships 30+ guided skills, and auto-configures the MCP server connection.
+This plugin gives Claude deep knowledge of Butterbase's nearly 40 MCP tools, ships 39 guided skills and 34 slash commands, and auto-configures the MCP server connection.
 
 ## What you get
 
@@ -29,7 +29,7 @@ This plugin gives Claude deep knowledge of Butterbase's 40+ MCP tools, ships 30+
 claude plugin marketplace add https://github.com/butterbase-ai/butterbase-skills
 
 # Install the plugin
-claude plugin install butterbase
+claude plugin install butterbase-skills@butterbase-skills
 ```
 
 ## Setup
