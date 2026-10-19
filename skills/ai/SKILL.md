@@ -1,11 +1,11 @@
 ---
 name: ai
-description: Use when calling the app's AI gateway from agent tools — chat completions, embeddings, listing models, configuring defaults or BYOK, reading token/cost usage
+description: Use when calling the app's AI gateway from agent tools — chat completions, embeddings, listing models, configuring defaults or BYOK, reading token/cost usage, polling video jobs or preparing declared fictional image references
 ---
 
 # Butterbase AI Gateway
 
-Every app has an LLM gateway with chat, embeddings, model listing, configuration, and usage reporting. One umbrella tool: **`manage_ai`**.
+The AI gateway provides chat, embeddings, model listing, configuration, usage reporting, and asynchronous video jobs. One umbrella tool: **`manage_ai`**.
 
 | Action | What it does | Returns |
 |---|---|---|
@@ -15,6 +15,8 @@ Every app has an LLM gateway with chat, embeddings, model listing, configuration
 | `get_config` | Current AI config (default model, BYOK key flag, etc.) | `AiConfig` |
 | `update_config` | Set defaults, allowed models, max tokens, BYOK | `AiConfig` |
 | `get_usage` | Token + cost aggregate over a window | usage record |
+| `submit_video` | Submit an ordinary async video job | `{ job_id, status, polling_url }` |
+| `poll_video` | Read an existing video job without submitting again | status, optional stage and authenticated content URLs |
 
 ---
 
@@ -121,6 +123,40 @@ Returns aggregate token counts + cost. Useful for billing reconciliation, spendi
 ## 8. Decisions (typed classification)
 
 For routing, classification, moderation or scoring, where code needs a choice / yes-no / score with probabilities, use `manage_ai` `action: "decide"` (SDK `ai.decide`) with a decision model (default `typesafe/jev-1.13`) instead of asking a chat model for JSON. It is cheaper, faster and returns typed probabilities. Full reference: `butterbase_docs` topic `ai`, "Decision models".
+
+---
+
+## 9. Video jobs and declared fictional references
+
+Before video work, call `butterbase_docs` with `topic: "ai"` and discover supported models with `manage_ai({ action: "list_models", app_id, modality: "video" })`.
+
+Preserve the returned job ID, show the reported stage, poll without issuing another submission, and display authenticated content URLs after completion. Use the caller's explicit fictional-character declaration only. Never silently add declarations or automatically label real people as fictional.
+
+The declaration example below belongs in the REST body for `POST /v1/:appId/videos/completions`; poll `GET /v1/:appId/videos/completions/:jobId`. The currently released MCP `submit_video` wrapper does **not** forward `reference_declarations` or `prepare_references`, so do not put these fields into that tool call and assume preparation occurred. Use the documented REST surface for this opt-in contract; `poll_video` can read the resulting job by ID. Consult current docs before choosing a client surface; do not invent an SDK video helper.
+
+### Optional fictional character references
+
+Eligible apps and models can declare specific image slots as AI-generated fictional characters:
+
+```json
+{
+  "input_images": ["https://images.example/fictional-character.png"],
+  "reference_declarations": [
+    {"path": "/input_images/0", "kind": "ai_generated_fictional_character"}
+  ],
+  "prepare_references": "on_rejection"
+}
+```
+
+Add these fields to an ordinary video request. Declare only images the caller knows are AI-generated fictional characters. A declaration does not establish consent for a real person's likeness or guarantee that an image will pass provider validation. Do not infer a declaration from appearance or a prompt.
+
+`on_rejection` is the default: prepare only after a verified eligible input rejection and retry once after settlement. `upfront` prepares all declared slots before submission. Canonical paths address image entries in `input_images`, `frame_images`, or `input_references`; use one canonical collection and avoid conflicting aliases. Up to eight distinct slots can be declared. Undeclared requests use ordinary video generation.
+
+Submission returns the same stable `job_id` while the worker advances through `preparing_references`, `submitting`, `polling`, and `settling`. Polling reads status; it does not trigger generation. Completion includes authenticated content URLs and acknowledged charges. Unsupported app/model combinations return `UNSUPPORTED_REFERENCE_PREPARATION`. Changed image bytes, unavailable or rejected assets, and capacity exhaustion may fail preparation. A timeout with unknown provider acceptance remains pending for reconciliation; do not submit another job merely because polling is slow.
+
+Preparation sends declared images to an external generation provider for storage and validation. Registration is not separately charged in this release; video generation uses the app's normal credits and settled usage. Source URLs and prompts are removed from preparation records after 24 hours. Provider copies are queued for deletion when the last retained job reference is released, subject to active jobs and unresolved operations; provider deletion can therefore take longer. App deletion preserves cleanup obligations and unsettled billing evidence. URL inputs have no storage-object identity: deleting the original file does not immediately delete its provider copy. Use stable storage `objectId` values in your own app and resolve fresh download URLs when loading UI.
+
+There is no character-library dashboard. Preparation eligibility and resource limits are deployment-controlled. For troubleshooting, inspect the returned stage and sanitized error, verify the declaration and unchanged image bytes, and contact the operator for unresolved acceptance or cleanup.
 
 ---
 
