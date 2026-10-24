@@ -87,7 +87,7 @@ Most operations live on a small set of `manage_*` umbrella tools and take an `ac
 
 - `manage_schema` — `get | dry_run | apply | list_migrations`
 - `manage_rls` — `enable | create_policy | update_policy | create_user_isolation | list | delete`
-- `manage_app` — `list | delete | pause | get_config | update_access_mode | secure | update_cors`
+- `manage_app` — `list | delete | pause | resume | get_config | update_access_mode | secure | update_cors`
 - `manage_oauth` — `configure | get | update | delete`
 - `manage_auth_config` — `configure_auth_hook | update_jwt | generate_service_key`
 - `manage_function` — `list | delete | get_logs | update_env`
@@ -104,6 +104,12 @@ Most operations live on a small set of `manage_*` umbrella tools and take an `ac
 Standalone tools (no `action`): `init_app`, `deploy_function`, `invoke_function`, `select_rows`, `insert_row`, `seed_database`, `create_frontend_deployment`, `rag_query`, `query_audit_logs`, `butterbase_docs`, `submit_suggestion`, `list_regions`, `move_app`, `move_app_status`, `teardown_source_replica`.
 
 ## Important Patterns
+
+### Paused apps
+
+Use `manage_app` action `resume` to bring a paused app back. Action `get_config` includes `paused_by`; HTTP 503 `APP_PAUSED` errors include `details.paused_by`. Owners keep management and data access while paused, but compute, KV and realtime remain blocked.
+
+An automatic inactivity pause on a free plan returns HTTP 402 `APP_RESUME_REQUIRES_UPGRADE` when resumed directly. Upgrading the organization restores idle-paused apps; owner and support pauses remain separate. Pause/resume can return HTTP 409 `APP_STATE_BUSY` during a concurrent state change or region cutover: retry after a short delay.
 
 ### Storage
 - Persist `object_id` (UUID) from upload response — NOT `s3_key` (bucket path)
