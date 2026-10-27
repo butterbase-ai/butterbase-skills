@@ -132,7 +132,7 @@ Before video work, call `butterbase_docs` with `topic: "ai"` and discover suppor
 
 Preserve the returned job ID, show the reported stage, poll without issuing another submission, and display authenticated content URLs after completion. Use the caller's explicit fictional-character declaration only. Never silently add declarations or automatically label real people as fictional.
 
-The declaration example below belongs in the REST body for `POST /v1/:appId/videos/completions`; poll `GET /v1/:appId/videos/completions/:jobId`. The currently released MCP `submit_video` wrapper does **not** forward `reference_declarations` or `prepare_references`, so do not put these fields into that tool call and assume preparation occurred. Use the documented REST surface for this opt-in contract; `poll_video` can read the resulting job by ID. Consult current docs before choosing a client surface; do not invent an SDK video helper.
+Inspect the connected `manage_ai` tool schema before choosing a client surface. When it includes both `reference_declarations` and `prepare_references`, add the declaration example below to `manage_ai` with `action: "submit_video"`. For older MCP servers that lack these fields, send the fields in the REST body for `POST /v1/:appId/videos/completions`; do not assume an older wrapper forwards unknown arguments. Poll the returned job ID with `poll_video` or `GET /v1/:appId/videos/completions/:jobId`. Do not invent an SDK video helper.
 
 ### Optional fictional character references
 
