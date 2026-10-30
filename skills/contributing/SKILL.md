@@ -18,7 +18,7 @@ Contributor guide for the Butterbase monorepo. Covers architecture, how to add M
 | `packages/shared` | `@butterbase/shared` | Internal shared types, constants, schema DSL, error types |
 | `packages/plugin` | `@butterbase/plugin` | Claude Code plugin (this package — skills for AI agents) |
 | `services/control-api` | `@butterbase/control-api` | Fastify API server — the brain. Routes, plugins, services. Port 4000 |
-| `services/mcp-server` | `@butterbase/mcp-server` | MCP server with ~28 tools (consolidated `manage_*` action-based tools + a few standalone ones like `init_app`, `deploy_function`, `select_rows`). Runs via stdio or HTTP (served by control-api at `/mcp`) |
+| `services/mcp-server` | `@butterbase/mcp` | MCP server with capability-dependent tools (consolidated `manage_*` action-based tools + standalone ones like `init_app`, `deploy_function`, `select_rows`). Runs via stdio or HTTP (served by control-api at `/mcp`); hosted cloud may also register `manage_office` |
 | `services/deno-runtime` | — | Serverless function executor. Deno-based worker isolation. Port 7133 |
 | `services/cron-scheduler` | `@butterbase/cron-scheduler` | Cron job runner using node-cron + cron-parser |
 | `services/dashboard` | — | React management UI (Vite + Radix UI) |

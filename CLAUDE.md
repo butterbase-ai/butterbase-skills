@@ -72,6 +72,16 @@ Preflight is automatic on any stage that touches the platform: it verifies the B
 
 ## Core Workflow
 
+### Office is organization-scoped
+
+For Office Ask, conversations, decisions, lifecycle controls or business memory, first call `butterbase_docs` with `topic: "office"`. The optional hosted `manage_office` tool has 22 actions; an OSS-only server may omit it. Use an explicit `org_id` and platform credential. App provisioning/preflight does not apply to Office: never create or select an app just to use it. CLI `butterbase office --org <uuid>` and SDK `OfficeClient` expose the same contract.
+
+Enable/pause/resume/approve return a saved receipt with `confirmation_id` and `confirmation_url`. Show the URL to the initiating owner; that owner signs in, reviews and confirms or cancels in the browser. Never resolve it as an agent or treat a pending receipt as executed. Observe it using status plus `confirmation_id`. Browser confirmation grants authority for that one saved operation only.
+
+Keep Ask's `idempotency_key`, `conversation_id` and `turn_id`. Reuse the request key only for the same intended write. Observe an existing turn with get_conversation or SDK askStream using its exact IDs, without another Ask POST. Disconnect/SIGINT ends observation only. Inspect unknown outcomes before retrying. Members can read and deny; new work requires the current owner and an eligible active organization. Principles remain native policy proposals. Read https://docs.butterbase.ai/core-concepts/office-clients/ for payloads and all actions.
+
+### App provisioning
+
 The standard sequence for building a Butterbase app:
 
 1. `init_app` — Create app, get `app_id` and `api_base`

@@ -100,6 +100,12 @@ If you're running the Butterbase monorepo locally, the MCP server URL defaults t
 export CONTROL_API_URL=http://localhost:4000
 ```
 
+## Office clients
+
+Hosted Butterbase MCP may expose the optional `manage_office` tool with 22 organization-scoped actions. Call `butterbase_docs` with `topic: "office"` before using it. Office uses a platform credential and an explicit `org_id`; it does not need an app. Equivalent interfaces are `butterbase office --org <uuid>` and SDK `OfficeClient`.
+
+Enable, pause, resume and approve return a saved browser confirmation receipt. Show `confirmation_url` to the initiating owner, who signs in and reviews one operation. Never confirm as an agent. Observe status using `confirmation_id`. Keep Ask's request key and exact conversation/turn IDs; retry the same intended write with the same key and observe admitted work without submitting another Ask. Disconnecting does not cancel server work. Inspect unknown outcomes before retrying. See the [Office client reference](https://docs.butterbase.ai/core-concepts/office-clients/).
+
 ## Also Available
 
 - **[@butterbase/sdk](https://www.npmjs.com/package/@butterbase/sdk)** — TypeScript SDK for client-side and server-side use
