@@ -17,6 +17,8 @@ This plugin gives Claude deep knowledge of Butterbase's nearly 40 MCP tools, shi
 
 ## What you get
 
+For organization-scoped Office Ask, decisions, conversations or business memory, read `butterbase_docs` topic `office` and [the Office client reference](https://docs.butterbase.ai/core-concepts/office-clients/). Hosted MCP may expose optional `manage_office`; CLI `butterbase office` and SDK `OfficeClient` use the same contract. Supply an explicit organization and platform credential; app provisioning is not required. Protected actions return a receipt for the initiating owner to review in the browser. Show that URL and observe the saved outcome; never confirm as an agent. See [`CLAUDE.md`](./CLAUDE.md#office-is-organization-scoped).
+
 - **Auto-configured MCP server** — `.mcp.json` points Claude at `https://api.butterbase.ai/mcp` with your `BUTTERBASE_API_KEY`. All Butterbase tools available immediately.
 - **Always-on context** — `CLAUDE.md` teaches Claude Butterbase's environment, branding, tool shape, and core workflow.
 - **Guided journey** — `/butterbase-skills:journey` walks any idea from brainstorm → plan → schema → auth → functions → deploy → optional hackathon submission.

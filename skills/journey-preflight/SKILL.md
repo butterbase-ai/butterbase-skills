@@ -1,6 +1,6 @@
 ---
 name: journey-preflight
-description: Use before any Butterbase platform-touching action (or when journey-preflight is invoked directly) to verify the user has a Butterbase account, the MCP server is connected, BUTTERBASE_API_KEY is set, and an app_id exists for this project. Re-run automatically if docs/butterbase/03-preflight.md is older than 24h or any required value is null.
+description: Use before a Butterbase app-building journey stage when project preflight is missing, older than 24 hours, or missing app credentials, or when journey-preflight is invoked directly.
 ---
 
 # Butterbase Preflight
