@@ -102,7 +102,7 @@ export CONTROL_API_URL=http://localhost:4000
 
 ## Office clients
 
-Hosted Butterbase MCP may expose the optional `manage_office` tool with 22 organization-scoped actions. Call `butterbase_docs` with `topic: "office"` before using it. Office uses a platform credential and an explicit `org_id`; it does not need an app. Equivalent interfaces are `butterbase office --org <uuid>` and SDK `OfficeClient`.
+Hosted Butterbase MCP may expose the optional `manage_office` tool with 44 organization-scoped actions. Call `butterbase_docs` with `topic: "office"` before using it. Office uses a platform credential and an explicit `org_id`; it does not need an app. Equivalent interfaces are `butterbase office --org <uuid>` and SDK `OfficeClient`.
 
 Enable, pause, resume and approve return a saved browser confirmation receipt. Show `confirmation_url` to the initiating owner, who signs in and reviews one operation. Never confirm as an agent. Observe status using `confirmation_id`. Keep Ask's request key and exact conversation/turn IDs; retry the same intended write with the same key and observe admitted work without submitting another Ask. Disconnecting does not cancel server work. Inspect unknown outcomes before retrying. See the [Office client reference](https://docs.butterbase.ai/core-concepts/office-clients/).
 
@@ -115,3 +115,9 @@ Enable, pause, resume and approve return a saved browser confirmation receipt. S
 ## License
 
 MIT
+
+Curated organization context uses `agent-memories` / SDK `agentMemories`; default agent retrieval searches only this category. Other business memory requires an explicit category read. Compact title/summary lists precede full entry reads; context never overrides rules or permissions. Amend/archive require the current revision. Private per-person memory remains deferred.
+
+`skills` supports separate list/detail/version/run pages, draft/test/reject and owner-confirmed approve/enable/rollback/run. `principles amend/retire` proposes governed changes. `settings` reads cadence and proposes revision-guarded 10/15/30/60-minute intervals without resuming paused work. Every-loop skills follow admitted full timer/event sweeps within a shared ten-minute budget; unchanged checks and Ask/test/manual/scheduled turns do not create loops. Extra runs can spend credits.
+
+`records list` / SDK `records.list` / MCP `list_office_records` reads bounded resource pages (25 default, 100 maximum). Preserve organization, resource and filters with `next_cursor`; loaded counts are not totals and cutoff pagination is not a transaction-wide snapshot. Read the Office reference for the complete 44-action contract and payloads.

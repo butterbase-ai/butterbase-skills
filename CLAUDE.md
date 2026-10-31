@@ -74,7 +74,7 @@ Preflight is automatic on any stage that touches the platform: it verifies the B
 
 ### Office is organization-scoped
 
-For Office Ask, conversations, decisions, lifecycle controls or business memory, first call `butterbase_docs` with `topic: "office"`. The optional hosted `manage_office` tool has 22 actions; an OSS-only server may omit it. Use an explicit `org_id` and platform credential. App provisioning/preflight does not apply to Office: never create or select an app just to use it. CLI `butterbase office --org <uuid>` and SDK `OfficeClient` expose the same contract.
+For Office Ask, conversations, decisions, lifecycle controls or business memory, first call `butterbase_docs` with `topic: "office"`. The optional hosted `manage_office` tool has 44 actions; an OSS-only server may omit it. Use an explicit `org_id` and platform credential. App provisioning/preflight does not apply to Office: never create or select an app just to use it. CLI `butterbase office --org <uuid>` and SDK `OfficeClient` expose the same contract.
 
 Enable/pause/resume/approve return a saved receipt with `confirmation_id` and `confirmation_url`. Show the URL to the initiating owner; that owner signs in, reviews and confirms or cancels in the browser. Never resolve it as an agent or treat a pending receipt as executed. Observe it using status plus `confirmation_id`. Browser confirmation grants authority for that one saved operation only.
 
@@ -222,3 +222,9 @@ For a single API key that works on both app and substrate endpoints, generate vi
 | `butterbase:journey-substrate` | Optional journey stage: link a deployed app to the owner's substrate so `ctx.substrate` is injected into functions. |
 | `butterbase:integrations` | Composio toolkits via `manage_integrations` — email, Slack, calendar, GitHub, Notion, Linear, CRM. Check before any third-party SaaS SDK. |
 | `butterbase:payments` | Stripe Connect via `manage_billing` — subscriptions, one-time, marketplace splits. Default before regional gateways. |
+
+Curated organization context uses `agent-memories` / SDK `agentMemories`; default agent retrieval searches only this category. Other business memory requires an explicit category read. Compact title/summary lists precede full entry reads; context never overrides rules or permissions. Amend/archive require the current revision. Private per-person memory remains deferred.
+
+`skills` supports separate list/detail/version/run pages, draft/test/reject and owner-confirmed approve/enable/rollback/run. `principles amend/retire` proposes governed changes. `settings` reads cadence and proposes revision-guarded 10/15/30/60-minute intervals without resuming paused work. Every-loop skills follow admitted full timer/event sweeps within a shared ten-minute budget; unchanged checks and Ask/test/manual/scheduled turns do not create loops. Extra runs can spend credits.
+
+`records list` / SDK `records.list` / MCP `list_office_records` reads bounded resource pages (25 default, 100 maximum). Preserve organization, resource and filters with `next_cursor`; loaded counts are not totals and cutoff pagination is not a transaction-wide snapshot. Read the Office reference for the complete 44-action contract and payloads.
